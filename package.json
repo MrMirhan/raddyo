@@ -1,38 +1,30 @@
 {
   "name": "raddyo",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
-  },
+  "version": "0.0.1",
+  "description": "Raddyo is live radio app that can be usefull for whole world.",
+  "main": "app.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "nodemon nodemon -e js,ejs"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "Mirhan",
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "axios": "^0.24.0",
+    "connect": "^3.7.0",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^1.4.0",
+    "dns": "^0.2.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "get-json": "^1.0.1",
+    "helmet": "^4.6.0",
+    "http": "^0.0.1-security",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.15",
+    "radio-browser": "^2.1.8",
+    "request": "^2.88.2",
+    "simple-get-json": "^8.1.1",
+    "util": "^0.12.4"
   }
 }
