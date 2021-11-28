@@ -23,4 +23,4 @@ app.get("/api/place", async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Raddyo app listening at http://localhost:${port}`)
-  })
+})
