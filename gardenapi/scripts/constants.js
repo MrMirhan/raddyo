@@ -1,5 +1,5 @@
 const URL_PLACES = 'https://radio.garden/api/ara/content/places';
-const URL_PLACE = 'https://radio.garden/api/ara/content/place/';
+const URL_PLACE = 'https://radio.garden/api/ara/content/page/';
 const URL_MP3 = 'http://radio.garden/api/ara/content/listen/';
 const URL_PARAM = 'listening-from-radio-garden';
 const PLACE_EMPTY =  {

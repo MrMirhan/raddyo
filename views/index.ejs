@@ -1,194 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <%- include('./parts/header'); %>
-  <body>
-    <div id="map">
-        <div id="controller-container">
-            
-        </div>
-    </div>
-    <script>
-        function setCookie(cname, cvalue, exdays) {
-            const d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            let expires = "expires="+ d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
+<%- include('./parts/header'); %>
 
-        function getCookie(cname) {
-            let name = cname + "=";
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let ca = decodedCookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-    </script>
-    <script>
-      // You can remove the following line if you don't need support for RTL (right-to-left) labels:
-      mapboxgl.setRTLTextPlugin(
-        "https://cdn.maptiler.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js"
-      );
-      mapboxgl.clearStorage();
-      var map = new mapboxgl.Map({
-        container: "map",
-        style:
-          "https://api.maptiler.com/maps/42881ad7-eb34-4369-aad1-166fa3d348f3/style.json?key=tZMlb0zrjdlBAH5xMniY",
-        center: [28.41787, 41.18448],
-        zoom: 6,
-      });
-      map.addControl(new mapboxgl.NavigationControl());
-    </script>
-    <script>
-        var playing = 0
-        exSound = Object.create(null)
-        
-        async function radioEmit(radio){
-            try{
-                if (playing == 1){
-                    await exSound.stop();
-                    playing = 0
-                }
-                var sound = await new Howl({
-                    src: radio.mp3,
-                    html5: true,
-                    format: ['mp3', 'm3u', 'aac']
-                });
-                console.log(radio)
-                await sound.play();
-                exSound = sound
-                playing = 1
-                setCookie("playing", radio.id, 7)
-            } catch(e) {
-                console.log("Error")
-                console.log(radio)
-            }
-        }
-        radioList = []
+    <body>
+        <aside class="sidebar">
+            <div class="toggle">
+                <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
+                    <span></span>
+                </a>
+            </div>
+            <div class="side-inner">
+                <div class="profile">
+                    <img src="images/raddyo-com-logo.svg">
+                    <div id="innerprofile">
+                        <div id="innerstations">
 
-        function radioSet(radios){
-            radioList = radios
-        }
+                        </div>
+                        <div id="innerplaces">
 
-        $.ajax({
-            url: "http://localhost:3000/api/stream",
-            dataType: "json",
-            success: function (data) {
-                var dots = [];
-                data.forEach(function (radio) {
-                    detail = {
-                        type: "Feature",
-                        properties: {
-                            id: radio.id,
-                            title: radio.name,
-                            slug: radio.slug,
-                            country: radio.country.name,
-                            mp3: radio.mp3,
-                            coordinates: radio.place.geo
-                        },
-                        geometry: {
-                            type: "Point",
-                            coordinates: radio.place.geo,
-                        },
-                    };
-                    dots.push(detail);
-                });  
-                radioSet(dots)
-                map.on("load", async () => {
-                    // Add a GeoJSON source with 3 points.
-                    await map.addSource("points", {
-                        type: "geojson",
-                        data: {
-                            type: "FeatureCollection",
-                            features: dots,
-                        },
-                    });
-                    // Add a circle layer
-                    await map.addLayer({
-                        id: "circle",
-                        type: "circle",
-                        source: "points",
-                        paint: {
-                            "circle-color": "#00ffe1",
-                            "circle-radius": 2
-                            //"circle-stroke-width": 0.1,
-                            //"circle-stroke-color": "#ffffff",
-                        },
-                    });
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="site-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div id="map">
+                            <div id="controller-container">
+                                <div class="Scriptcontent">
+                                    <%- include('./parts/player'); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include('./parts/scripts'); %>
+    </body>
 
-                    const popup = new mapboxgl.Popup({
-                        closeButton: false,
-                        closeOnClick: false
-                    });
-                    // Center the map on the coordinates of any clicked circle from the 'circle' layer.
-                    await map.on("click", "circle", (e) => {
-                        radioEmit(e.features[0].properties)
-                        map.easeTo({
-                            center: e.features[0].geometry.coordinates,
-                            zoom: 7.5,
-                            duration: 2000,
-                        });
-                    });
-
-                    // Change the cursor to a pointer when the it enters a feature in the 'circle' layer.
-                    await map.on("mouseenter", "circle", (e) => {
-                        map.getCanvas().style.cursor = "pointer";
-                        const coordinates = e.features[0].geometry.coordinates.slice();
-                        const description = e.features[0].properties.title;
-                        
-                        // Ensure that if the map is zoomed out such that multiple
-                        // copies of the feature are visible, the popup appears
-                        // over the copy being pointed to.
-                        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                        }
-                        
-                        // Populate the popup and set its coordinates
-                        // based on the feature found.
-                        popup.setLngLat(coordinates).setHTML("<p><strong>" + description + "</strong></p>").addTo(map);
-                    });
-
-                    // Change it back to a pointer when it leaves.
-                    await map.on("mouseleave", "circle", () => {
-                        map.getCanvas().style.cursor = "";
-                        popup.remove();
-                    });
-                });
-            }
-        })
-        async function loadBefore(){
-            await sleep(5 * 1000)
-            try{
-                playingCookie = await getCookie("playing")
-                playingRadio = await radioList.find(x => x.properties.id === playingCookie);
-                await map.easeTo({
-                    center: playingRadio.properties.coordinates,
-                    zoom: 7.5,
-                    duration: 2000,
-                });
-                await radioEmit(playingRadio.properties)
-                await sleep(2 * 1000)
-                await radioEmit(playingRadio.properties)
-            } catch (e){
-                console.log(e)
-            }
-        }
-        loadBefore()
-        //data = Object.keys(data).map((key) => [Number(key), data[key]]);
-        //data = Object.entries(data);
-        //var data = radioList[0]
-        //dots = Object.keys(dots).map((key) => [Number(key), dots[key]]);
-    </script>
-    <%- include('./parts/scripts'); %>
-  </body>
 </html>
