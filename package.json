@@ -1,0 +1,30 @@
+{
+    "name": "raddyo",
+    "version": "0.0.1",
+    "description": "Raddyo is live radio app that can be usefull for whole world.",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon nodemon -e js,ejs"
+    },
+    "author": "Mirhan",
+    "license": "ISC",
+    "dependencies": {
+        "-": "^0.0.1",
+        "axios": "^0.24.0",
+        "connect": "^3.7.0",
+        "cookie-parser": "^1.4.6",
+        "cookie-session": "^1.4.0",
+        "dns": "^0.2.2",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "get-json": "^1.0.1",
+        "helmet": "^4.6.0",
+        "http": "^0.0.1-security",
+        "livereload": "^0.9.3",
+        "nodemon": "^2.0.15",
+        "radio-browser": "^2.1.8",
+        "request": "^2.88.2",
+        "simple-get-json": "^8.1.1",
+        "util": "^0.12.4"
+    }
+}

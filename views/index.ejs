@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<%- include('./parts/header'); %>
+
+    <body>
+        <aside class="sidebar">
+            <div class="toggle">
+                <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
+                    <span></span>
+                </a>
+            </div>
+            <div class="side-inner">
+                <div class="profile">
+                    <img src="images/raddyo-com-logo.svg">
+                    <div id="innerprofile">
+                        <div id="innerstations">
+
+                        </div>
+                        <div id="innerplaces">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="site-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div id="map">
+                            <div id="controller-container">
+                                <div class="Scriptcontent">
+                                    <%- include('./parts/player'); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include('./parts/scripts'); %>
+    </body>
+
+</html>
